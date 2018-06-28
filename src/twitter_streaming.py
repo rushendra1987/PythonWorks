@@ -5,7 +5,7 @@ import json
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-
+import MysqlDemo
 #Variables that contains the user credentials to access Twitter API 
 access_token = ""
 access_token_secret = ""
@@ -18,10 +18,11 @@ class StdOutListener(StreamListener):
 
     def on_data(self, data):
         tweet = json.loads(data)
-        print ((tweet['user']['name']).encode("utf-8"))
-        print ((tweet['text']).encode("utf-8"))
-        print ((tweet['created_at']).encode("utf-8"))
+        name = (tweet['user']['name']).encode("utf-8")
+        text = (tweet['text']).encode("utf-8")
+        createdTime = (tweet['created_at']).encode("utf-8")
         #print (data)
+        MysqlDemo.mysqlInsert(name, text, createdTime)
         return True
 
     def on_error(self, status):
